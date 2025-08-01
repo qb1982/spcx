@@ -3,8 +3,10 @@
  */
 class InventoryAPI {
   constructor() {
-    // 登入状态
+    // 登录状态
     this.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+    // 验证码
+    this.verifyCode = localStorage.getItem('verifyCode') || null;
     // 全部商品
     this.allProduct = new Map();
     // 往来单位
@@ -27,6 +29,11 @@ class InventoryAPI {
    */
   async cloudContext(upText) {
     try {
+      // 如果不是登录请求且已登录，添加验证码
+      if (upText.api !== 'login' && this.isAuthenticated) {
+        upText.verifyCode = this.verifyCode;
+      }
+
       const baseUrl = 'https://www.kdocs.cn/api/v3/ide/file/376458734559/script/V2-116KoKukgp1oRnx8QREi07/sync_task';
       const token = '5KxuHXTf55oIsqWXNQCmfb';
       const response = await fetch(baseUrl, {
@@ -44,6 +51,10 @@ class InventoryAPI {
       }
 
       const data = await response.json();
+      if(!data.data.result){
+        this.logout();
+        throw new Error('请先登录');
+      }
       return data.data.result;
     } catch (error) {
       console.error('API请求错误:', error);
@@ -60,17 +71,27 @@ class InventoryAPI {
    */
   async login(username, password) {
     try {
-      this.isAuthenticated = await this.cloudContext({ api: 'login', name: username, pw: password });
-      if (!this.isAuthenticated) throw new Error('请检查用户名和密码');
-      await this.fetchAllData();
-      // 登录成功后保存状态
+      const verifyCode = await this.cloudContext({ api: 'login', name: username, pw: password });
+      if (!verifyCode) throw new Error('请检查用户名和密码');
+      
+      // 保存登录状态和验证码
+      this.isAuthenticated = true;
+      this.verifyCode = verifyCode;
+      
       localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('verifyCode', verifyCode);
+      
+      await this.fetchAllData();
       this.showNotification('成功', '登录成功', 'success');
       return true;
     } catch (error) {
       // 登录失败后清除状态
-      localStorage.setItem('isAuthenticated', 'false');
       this.isAuthenticated = false;
+      this.verifyCode = null;
+      
+      localStorage.setItem('isAuthenticated', 'false');
+      localStorage.setItem('verifyCode', '');
+      
       this.showNotification('错误', '登录失败', 'error');
       return false;
     }
@@ -81,8 +102,12 @@ class InventoryAPI {
    */
   logout() {
     // 登出后清除状态
-    localStorage.setItem('isAuthenticated', 'false');
     this.isAuthenticated = false;
+    this.verifyCode = null;
+    
+    localStorage.setItem('isAuthenticated', 'false');
+    localStorage.setItem('verifyCode', '');
+    
     this.showNotification('提示', '已成功登出', 'info');
   }
 
@@ -91,7 +116,7 @@ class InventoryAPI {
    * @returns {Promise<string>} - 数据版本号
    */
   async getVersion() {
-    return this.cloudContext({ api: 'getVer' });
+    return this.cloudContext({ api: 'getVer', verifyCode: this.verifyCode });
   }
 
   /**
@@ -105,7 +130,7 @@ class InventoryAPI {
       if (this.cachedVersion == currentVersion && this.allData) {
         this.showNotification('未发现新数据', '跳过更新');
       } else {
-        this.allData = await this.cloudContext({ api: 'getData' });
+        this.allData = await this.cloudContext({ api: 'getData', verifyCode: this.verifyCode });
         this.cachedVersion = currentVersion;
         // 将数据和版本号缓存到 localStorage
         localStorage.setItem('cachedAllData', JSON.stringify(this.allData));
@@ -167,7 +192,8 @@ class InventoryAPI {
   async updateRecord(data) {
     return this.cloudContext({
       api: 'update',
-      data: data
+      data: data,
+      verifyCode: this.verifyCode
     });
   }
 
