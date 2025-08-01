@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>灵石县翠峰镇庆彬五金销售部</title>
+  <script src="./js/tailwindcss.js"></script>
+  <link href="./css/font-awesome.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#4080FF',
+            success: '#00B42A',
+            warning: '#FF7D00',
+            danger: '#F53F3F',
+            neutral: {
+              100: '#F2F3F5',
+              200: '#E5E6EB',
+              300: '#C9CDD4',
+              400: '#86909C',
+              500: '#4E5969',
+              600: '#272E3B',
+              700: '#1D2129',
+            }
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .transition-custom {
+        transition: all 0.3s ease;
+      }
+      .shadow-custom {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+    }
+  </style>
+</head>
+
+<body class="font-inter bg-neutral-100 text-neutral-700 min-h-screen flex flex-col">
+  <!-- 通知框 -->
+  <div id="notification"
+    class="fixed top-4 left-1/2 -translate-x-1/2 z-50 opacity-0 translate-y-[-20px] transition-all duration-300">
+    <div class="flex items-center p-4 rounded-lg shadow-lg">
+      <div id="notificationIcon" class="mr-3 p-2 rounded-full bg-primary/10 text-primary">
+        <i class="fa fa-info-circle"></i>
+      </div>
+      <div>
+        <div id="notificationMessage"></div>
+      </div>
+      <button id="closeNotification" class="ml-4 text-neutral-400 hover:text-neutral-600">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- 登录栏 -->
+  <header class="bg-white shadow-md">
+    <div class="container mx-auto px-3 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-3 md:space-x-4">
+        <i class="fa fa-cubes text-primary text-xl md:text-2xl"></i>
+        <h1 class="text-[clamp(1.2rem,3vw,1.8rem)] font-bold text-neutral-700">灵石县翠峰镇庆彬五金销售部</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button id="loginButton"
+          class="items-center px-4 py-2 rounded-lg bg-primary text-white transition-custom hover:bg-primary/90">
+          <i class="fa fa-user-circle mr-2"></i>
+          <span>登录</span>
+        </button>
+        <button id="logoutButton"
+          class="items-center hidden px-4 py-2 rounded-lg bg-neutral-300 text-neutral-700 transition-custom hover:bg-neutral-400">
+          <i class="fa fa-sign-out mr-2"></i>
+          <span>退出</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 导航栏 -->
+  <nav class="bg-white border-b border-neutral-200 sticky top-0 z-40 shadow-sm">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center">
+        <div class="flex space-x-1">
+          <!-- 商品查询 -->
+          <a href="#" data-target="productQuery"
+            class="py-4 px-3 text-neutral-700 hover:text-primary border-b-2 border-transparent hover:border-primary/30 font-medium flex items-center group transition-all duration-200">
+            <i class=" fa fa-search mr-2 group-hover:scale-110 transition-transform"></i>商品查询
+          </a>
+          <!-- 商品入库 -->
+          <a href="#" data-target="warehouseIn"
+            class="py-4 px-3 text-neutral-700 hover:text-primary border-b-2 border-transparent hover:border-primary/30 font-medium flex items-center group transition-all duration-200">
+            <i class="fa fa-plus-circle mr-2 group-hover:scale-110 transition-transform"></i>商品入库
+          </a>
+          <!-- 商品出库 -->
+          <a href="#" data-target="warehouseOut"
+            class="py-4 px-3 text-neutral-700 hover:text-primary border-b-2 border-transparent hover:border-primary/30 font-medium flex items-center group transition-all duration-200">
+            <i class="fa fa-minus-circle mr-2 group-hover:scale-110 transition-transform"></i>商品出库
+          </a>
+          <!-- 其他导航项 -->
+        </div>
+        <div class="hidden md:flex items-center space-x-1">
+          <!-- 其他导航项 -->
+        </div>
+        <div class="md:hidden flex items-center">
+          <button id="mobileMenuButton"
+            class="p-2 rounded-lg text-neutral-600 hover:text-primary hover:bg-primary/5 transition-all duration-200">
+            <i class="fa fa-bars"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- 移动端菜单 (默认隐藏) -->
+  <div id="mobileMenu" class="md:hidden bg-white border-t border-neutral-200 hidden">
+    <div class="container mx-auto px-4 py-1 space-y-0">
+      <a href="#" data-target="productQuery"
+        class="block py-2 px-3 text-neutral-700 border-transparent font-medium rounded-lg transition-all duration-200">
+        <i class="fa fa-search mr-2"></i> 商品查询
+      </a>
+      <a href="#" data-target="warehouseIn"
+        class="block py-2 px-3 text-neutral-700 border-transparent font-medium rounded-lg transition-all duration-200">
+        <i class="fa fa-plus-circle mr-2"></i> 商品入库
+      </a>
+      <a href="#" data-target="warehouseOut"
+        class="block py-2 px-3 text-neutral-700 border-transparent font-medium rounded-lg transition-all duration-200">
+        <i class="fa fa-minus-circle mr-2"></i> 商品出库
+      </a>
+      <!-- 其他移动端导航项 -->
+    </div>
+  </div>
+
+  <!-- 主内容区 - 数据展示区域 -->
+  <main class="flex-grow container mx-auto px-4 py-8">
+
+    <!-- 商品查询 -->
+    <section id="productQuery" class="mb-8 bg-white rounded-xl shadow-custom p-6 transition-custom hover:shadow-lg">
+      <!-- 搜索输入框和按钮 -->
+      <div class="flex justify-center items-center">
+        <input type="text" id="searchInput" placeholder="商品名称关键字..."
+          class="border-t-2 border-b-2 border-l-2 border-blue-500 border-r-0 rounded-none px-3 py-2 w-full max-w-2xl text-sm focus:outline-none focus:border-blue-600">
+        <button id="searchButton"
+          class="bg-blue-600 text-white border-t border-b border-l border-neutral-300 border-r border-blue-600 rounded-r-lg px-4 py-2 hover:bg-blue-700 transition-colors whitespace-nowrap">
+          <i class="fa fa-search mr-1"></i> 搜索
+        </button>
+      </div>
+      <!-- 商品列表容器 -->
+      <div class="mt-4 relative">
+        <div class="text-sm text-neutral-500 mb-2">
+          <span id="resultCount">找到 <span class="font-medium">0</span> 个商品</span>
+        </div>
+        <!-- 左右分栏布局容器 -->
+        <div
+          class="flex gap-0 max-h-[calc(100vh-200px)] min-h-[400px] border border-neutral-200 rounded-lg bg-white shadow-sm overflow-hidden">
+          <!-- 左侧商品名称列表 -->
+          <div id="productListContainer"
+            class="w-2/5 border-r border-neutral-200 overflow-y-auto p-0 m-0 flex-shrink-0">
+            <div class="p-2">
+              <div class="text-center py-16 text-neutral-400 whitespace-nowrap overflow-x-hidden text-ellipsis">
+                <i class="fa fa-list text-5xl mb-4 block"></i>
+                <p>商品列表</p>
+              </div>
+            </div>
+          </div>
+          <!-- 右侧商品详情区域 -->
+          <div id="productDetailContainer" class="w-3/5 overflow-y-auto p-4 m-0 flex-shrink-0 flex flex-col">
+            <div class="flex-grow flex flex-col items-center justify-center text-neutral-400">
+              <i class="fa fa-info-circle text-5xl mb-4 block"></i>
+              <p>请点击左侧商品名称查看详情</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 商品入库 -->
+    <section id="warehouseIn" class="bg-white rounded-lg shadow-sm p-6 mb-6 hidden">
+      <h2 class="text-lg font-medium mb-6 flex items-center">
+        <i class="fa fa-file-text-o text-primary mr-2"></i> 入库单
+      </h2>
+
+      <!-- 单据头部信息 -->
+      <div class="grid grid-cols-3 md:grid-cols-9 gap-4 mb-4">
+        <!-- 供方输入框 -->
+        <div class="col-span-3 md:col-span-3">
+          <label class="block text-sm text-gray-500 mb-1">供方</label>
+          <div class="relative">
+            <input type="text" id="supplier" class="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+              placeholder="供应商名称">
+            <!-- 修改供方下拉框 -->
+            <div id="supplierDropdown"
+              class="absolute bg-white border border-gray-200 z-50 max-h-64 overflow-y-auto hidden w-full md:w-[300px]">
+            </div>
+          </div>
+        </div>
+        <!-- 日期输入框 -->
+        <div class="col-span-1 md:col-span-2">
+          <label class="block text-sm text-gray-500 mb-1">日期</label>
+          <input type="date" id="in-date" class="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+            value="2025-07-15">
+        </div>
+        <!-- 单号输入框 -->
+        <div class="col-span-1 md:col-span-2">
+          <label class="block text-sm text-gray-500 mb-1">单据号</label>
+          <input type="text" id="in-order-number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+            value="RKD20250715001" readonly>
+        </div>
+        <!-- 操作员输入框 -->
+        <div class="col-span-1 md:col-span-2">
+          <label class="block text-sm text-gray-500 mb-1">操作员</label>
+          <input type="text" id="in-operator" class="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+            placeholder="填写操作员">
+        </div>
+      </div>
+
+      <!-- 表格区域 -->
+      <div class="overflow-x-auto border border-gray-200 rounded-lg">
+        <table class="min-w-full border-collapse">
+          <thead>
+            <tr class="bg-gray-50">
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600">序号</th>
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600 w-1/3">品名</th>
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600">单位</th>
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600 w-1/8">数量</th>
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600 w-1/7">单价</th>
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600 w-1/7">金额</th>
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600">操作</th>
+            </tr>
+          </thead>
+          <tbody id="warehouseInTableBody">
+            <!-- 移除初始行 -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 操作按钮 -->
+      <div class="flex justify-between mt-4">
+        <button id="addWarehouseRow" class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200">
+          <i class="fa fa-plus mr-1"></i> 添加行
+        </button>
+        <button id="submitWarehouseIn" class="px-4 py-2 bg-primary text-white rounded text-sm hover:bg-primary/90">
+          <i class="fa fa-check mr-1"></i> 确认入库
+        </button>
+      </div>
+    </section>
+
+    <!-- 商品出库 -->
+    <section id="warehouseOut" class="bg-white rounded-lg shadow-sm p-6 mb-6 hidden">
+      <h2 class="text-lg font-medium mb-6 flex items-center">
+        <i class="fa fa-file-text-o text-primary mr-2"></i> 出库单
+      </h2>
+
+      <!-- 单据头部信息 -->
+      <div class="grid grid-cols-3 md:grid-cols-9 gap-4 mb-4">
+        <!-- 客户输入框 -->
+        <div class="col-span-3 md:col-span-3">
+          <label class="block text-sm text-gray-500 mb-1">客户</label>
+          <div class="relative">
+            <input type="text" id="customer" class="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+              placeholder="客户名称">
+            <!-- 客户下拉框 -->
+            <div id="customerDropdown"
+              class="absolute bg-white border border-gray-200 z-50 max-h-64 overflow-y-auto hidden w-full md:w-[300px]">
+            </div>
+          </div>
+        </div>
+        <!-- 日期输入框 -->
+        <div class="col-span-1 md:col-span-2">
+          <label class="block text-sm text-gray-500 mb-1">日期</label>
+          <input type="date" id="out-date" class="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+            value="2025-07-15">
+        </div>
+        <!-- 单号输入框 -->
+        <div class="col-span-1 md:col-span-2">
+          <label class="block text-sm text-gray-500 mb-1">单据号</label>
+          <input type="text" id="out-order-number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+            value="CKD20250715001" readonly>
+        </div>
+        <!-- 操作员输入框 -->
+        <div class="col-span-1 md:col-span-2">
+          <label class="block text-sm text-gray-500 mb-1">操作员</label>
+          <input type="text" id="out-operator" class="w-full border border-gray-300 rounded px-3 py-2 text-sm"
+            placeholder="填写操作员">
+        </div>
+      </div>
+
+      <!-- 表格区域 -->
+      <div class="overflow-x-auto border border-gray-200 rounded-lg">
+        <table class="min-w-full border-collapse">
+          <thead>
+            <tr class="bg-gray-50">
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600">序号</th>
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600 w-1/3">品名</th>
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600">单位</th>
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600 w-1/8">数量</th>
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600 w-1/7">单价</th>
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600 w-1/7">金额</th>
+              <th class="border border-gray-300 px-4 py-2 text-center text-xs font-medium text-gray-600">操作</th>
+            </tr>
+          </thead>
+          <tbody id="warehouseOutTableBody">
+            <!-- 移除初始行 -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 操作按钮 -->
+      <div class="flex justify-between mt-4">
+        <button id="addWarehouseOutRow" class="px-3 py-1 bg-gray-100 text-gray-700 rounded text-sm hover:bg-gray-200">
+          <i class="fa fa-plus mr-1"></i> 添加行
+        </button>
+        <button id="submitWarehouseOut" class="px-4 py-2 bg-primary text-white rounded text-sm hover:bg-primary/90">
+          <i class="fa fa-check mr-1"></i> 确认出库
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="bg-white border-t border-neutral-200 py-6 mt-8">
+    <div class="container mx-auto px-4 text-center text-neutral-500 text-sm">
+      <p>© 2025 商品查询系统 | 数据仅供内部使用</p>
+    </div>
+  </footer>
+
+  <!-- 登录模态框 -->
+  <div id="loginModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-lg p-6 max-w-md w-full mx-4 transform transition-all scale-95 opacity-0"
+      id="modalContent">
+      <div class="text-center mb-4">
+        <i class="fa fa-lock text-primary text-4xl mb-2"></i>
+        <h3 class="text-xl font-semibold text-neutral-700">用户登录</h3>
+      </div>
+
+      <form id="loginForm" class="space-y-4">
+        <div>
+          <label for="username" class="block text-sm font-medium text-neutral-700 mb-1">用户名</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-neutral-400">
+              <i class="fa fa-user"></i>
+            </span>
+            <input type="text" id="username" name="username" required
+              class="pl-10 pr-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom w-full">
+          </div>
+        </div>
+
+        <div>
+          <label for="password" class="block text-sm font-medium text-neutral-700 mb-1">密码</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-neutral-400">
+              <i class="fa fa-lock"></i>
+            </span>
+            <input type="password" id="password" name="password" required
+              class="pl-10 pr-4 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-custom w-full">
+          </div>
+        </div>
+
+        <div class="flex justify-end space-x-3">
+          <button type="button" id="closeLoginModal"
+            class="px-4 py-2 rounded-lg bg-neutral-200 text-neutral-700 transition-custom hover:bg-neutral-300">
+            取消
+          </button>
+          <button type="submit"
+            class="px-4 py-2 rounded-lg bg-primary text-white transition-custom hover:bg-primary/90">
+            登录
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="./js/pinyinmatch.js"></script>
+  <script type="module" src="./js/app.js"></script>
+</body>
+
+</html>
