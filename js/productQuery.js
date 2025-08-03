@@ -175,19 +175,19 @@ function showProductDetails(productData) {
     <div class="p-6 space-y-6">
       <!-- 价格详情区域 -->
       <div class="grid grid-cols-1 gap-4">
-        <div class="bg-neutral-50 p-4 rounded-lg">
+        <div class="bg-neutral-50 p-1 rounded-lg">
           <div class="text-sm text-neutral-500 mb-1">最新价</div>
           <div class="text-lg font-medium text-blue-600">¥${safeLatestPrice.toFixed(2)}</div>
         </div>
-        <div class="bg-neutral-50 p-4 rounded-lg">
+        <div class="bg-neutral-50 p-1 rounded-lg">
           <div class="text-sm text-neutral-500 mb-1">平均价</div>
           <div class="text-lg font-medium">¥${safeAvgPrice.toFixed(2)}</div>
         </div>
-        <div class="bg-neutral-50 p-4 rounded-lg">
+        <div class="bg-neutral-50 p-1 rounded-lg">
           <div class="text-sm text-neutral-500 mb-1">最高价</div>
           <div class="text-lg font-medium text-red-600">¥${safeHighestPrice.toFixed(2)}</div>
         </div>
-        <div class="bg-neutral-50 p-4 rounded-lg">
+        <div class="bg-neutral-50 p-1 rounded-lg">
           <div class="text-sm text-neutral-500 mb-1">最低价</div>
           <div class="text-lg font-medium text-green-600">¥${safeLowestPrice.toFixed(2)}</div>
         </div>
@@ -216,6 +216,7 @@ function showProductDetails(productData) {
   `;
 
 }
+
 
 
 
