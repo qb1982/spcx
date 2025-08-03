@@ -184,8 +184,6 @@ async function initApp() {
                 avgPrice: prices.reduce((sum, price) => sum + price, 0) / prices.length * multiple,
             });
         }
-
-        initProductQuery();
     } else {
         // 若未登录，强制显示搜索页面
         const defaultSection = document.getElementById('productQuery');
@@ -208,7 +206,7 @@ async function initApp() {
         }
 
         // 仅在未登录时显示登录窗口
-        showLoginModal();
+        // showLoginModal();
     }
 }
 
