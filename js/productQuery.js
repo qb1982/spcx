@@ -38,6 +38,7 @@ export default function () {
   // 初始渲染数据
   filteredStatistics = allStatistics.slice(0, 50); // 显示最近50个商品
   renderData();
+  bindEventHandlers();
   api.showNotification('成功', '数据加载成功', 'success');
 }
 
@@ -216,6 +217,7 @@ function showProductDetails(productData) {
   `;
 
 }
+
 
 
 
