@@ -174,7 +174,7 @@ function showProductDetails(productData) {
     </div>
     <div class="p-6 space-y-6">
       <!-- 价格详情区域 -->
-      <div class="grid grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 gap-4">
         <div class="bg-neutral-50 p-4 rounded-lg">
           <div class="text-sm text-neutral-500 mb-1">最新价</div>
           <div class="text-lg font-medium text-blue-600">¥${safeLatestPrice.toFixed(2)}</div>
@@ -216,6 +216,7 @@ function showProductDetails(productData) {
   `;
 
 }
+
 
 
 
