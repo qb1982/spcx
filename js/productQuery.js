@@ -27,7 +27,7 @@ function bindEventHandlers() {
 // 获取全部数据
 export default function () {
   // 统计商品信息
-  if (allStatistics.length) {
+  if (!allStatistics.length) {
     allStatistics = defaultStatistics;
   } else {
     api.allProduct.forEach((info, name) => {
@@ -216,6 +216,7 @@ function showProductDetails(productData) {
   `;
 
 }
+
 
 
 
