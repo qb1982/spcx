@@ -142,7 +142,7 @@ function showProductDetails(productData) {
   const safeAvgPrice = Number(avgPrice) || 0;
 
   // 获取该商品的所有出入库记录
-  const productRecords = api.allData.reduce((arr, record) => {
+  const productRecords = api.isAuthenticated ? api.allData.reduce((arr, record) => {
     const filtered = record.qd.reduce((map, item) => {
       if (item[0] === productName) {
         if (map.size) {
@@ -166,7 +166,7 @@ function showProductDetails(productData) {
       });
     }
     return arr;
-  }, []);
+  }, []) : [];
 
   detailContainer.innerHTML = `
     <div class="p-4 border-b border-neutral-200">
@@ -216,6 +216,7 @@ function showProductDetails(productData) {
   `;
 
 }
+
 
 
 
