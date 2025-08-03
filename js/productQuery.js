@@ -2,7 +2,7 @@
  * 商品查询模块
  */
 import { api } from './api.js';
-import { defaultStatistics } from './staticProductData.js';
+import defaultStatistics from './staticProductData.js';
 
 // DOM元素
 const searchInput = document.getElementById('searchInput');
@@ -217,6 +217,7 @@ function showProductDetails(productData) {
   `;
 
 }
+
 
 
 
