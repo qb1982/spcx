@@ -169,9 +169,9 @@ function showProductDetails(productData) {
   }, []) : [];
 
   detailContainer.innerHTML = `
-    <div class="p-4 border-b border-neutral-200">
+    <!-- div class="p-4 border-b border-neutral-200">
       <h3 class="text-lg font-semibold text-neutral-800">${productName}</h3>
-    </div>
+    </div -->
     <div class="p-6 space-y-6">
       <!-- 价格详情区域 -->
       <div class="grid grid-cols-1 gap-4">
@@ -192,7 +192,7 @@ function showProductDetails(productData) {
           <div class="text-lg font-medium text-green-600">¥${safeLowestPrice.toFixed(2)}</div>
         </div>
       </div>
-      <!-- 出入库记录区域
+      <!-- 出入库记录区域 -->
       <div class="pt-4 border-t border-neutral-200">
         <h4 class="text-base font-medium mb-3">出入库记录 (${productRecords.length})</h4>
         <div class="bg-neutral-50 rounded-lg p-3 space-y-2 max-h-[300px] overflow-y-auto">
@@ -211,12 +211,12 @@ function showProductDetails(productData) {
             </div>
           `).join('') : '<div class="text-center text-neutral-400 py-4">暂无记录</div>'}
         </div>
-         -->
       </div>
     </div>
   `;
 
 }
+
 
 
 
