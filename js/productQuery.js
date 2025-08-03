@@ -2,7 +2,7 @@
  * 商品查询模块
  */
 import { api } from './api.js';
-
+improt { defaultStatistics } form './staticProductData.js';
 
 // DOM元素
 const searchInput = document.getElementById('searchInput');
@@ -27,10 +27,14 @@ function bindEventHandlers() {
 // 获取全部数据
 export default function () {
   // 统计商品信息
-  if (allStatistics.length) return;
-  api.allProduct.forEach((info, name) => {
-    allStatistics.push([name, info.unit, info.newPrice.toFixed(2), info.maxPrice.toFixed(2), info.minPrice.toFixed(2), info.avgPrice.toFixed(2)]);
-  });
+  if (allStatistics.length) {
+    allStatistics = defaultStatistics;
+  } else {
+    api.allProduct.forEach((info, name) => {
+      allStatistics.push([name, info.unit, info.newPrice.toFixed(2), info.maxPrice.toFixed(2), info.minPrice.toFixed(2), info.avgPrice.toFixed(2)]);
+    });
+  }
+
   // 初始渲染数据
   bindEventHandlers();
   filteredStatistics = allStatistics.slice(0, 50); // 显示最近50个商品
@@ -52,9 +56,7 @@ function handleSearch() {
 
 // 渲染数据
 function renderData() {
-  const showData = api.isAuthenticated ? filteredStatistics : [];
-  let resultCount = showData.length;
-
+  let resultCount = filteredStatistics.length;
   const productListContainer = document.getElementById('productListContainer');
   if (!productListContainer) {
     console.error('Element with ID "productListContainer" not found in DOM');
@@ -83,8 +85,8 @@ function renderData() {
     const fragment = document.createDocumentFragment();
 
     // 添加数据行
-    if (showData && showData.length) {
-      showData.forEach((item, index) => {
+    if (filteredStatistics && filteredStatistics.length) {
+      filteredStatistics.forEach((item, index) => {
         const bgClass = index % 2 === 0 ? 'bg-white' : 'bg-neutral-50';
         const productName = item[0];
 
@@ -215,5 +217,6 @@ function showProductDetails(productData) {
   `;
 
 }
+
 
 
